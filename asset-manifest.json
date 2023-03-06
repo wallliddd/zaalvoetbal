@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/zaalvoetbal/static/css/main.073c9b0a.css",
+    "main.js": "/zaalvoetbal/static/js/main.b5492485.js",
+    "static/js/787.d6d84f6d.chunk.js": "/zaalvoetbal/static/js/787.d6d84f6d.chunk.js",
+    "static/media/logo.svg": "/zaalvoetbal/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "index.html": "/zaalvoetbal/index.html",
+    "main.073c9b0a.css.map": "/zaalvoetbal/static/css/main.073c9b0a.css.map",
+    "main.b5492485.js.map": "/zaalvoetbal/static/js/main.b5492485.js.map",
+    "787.d6d84f6d.chunk.js.map": "/zaalvoetbal/static/js/787.d6d84f6d.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.073c9b0a.css",
+    "static/js/main.b5492485.js"
+  ]
+}
