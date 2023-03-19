@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
 import HomeIcon from '@mui/icons-material/Home';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import PlaceIcon from '@mui/icons-material/Place';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import {doc, onSnapshot, updateDoc, setDoc, deleteDoc, collection, serverTimestamp, getDocs, query, where, orderBy, limit} from 'firebase/firestore';
 import db from '../firebase.config'
@@ -10,6 +14,7 @@ export default function Enroll({currentuser}) {
   const [seeMoreModal, setSeeMoreModal] = useState('none')
   const [userNow, setUserNow] = useState(null)
   const [events, setEvents] = useState(null)
+  const [refresh, setFresh] = useState(false)
   const userObj =JSON.parse(localStorage.getItem('loginZaalvoetbal'))
 
 
@@ -56,9 +61,9 @@ export default function Enroll({currentuser}) {
   const players = ["walid", "Faycal", "Ramin", "Ashkan", "Nawied", 
   'Shahin', 'Wais',"walid", "Faycal", "Ramin", "Ashkan", "Nawied", 'Shahin', 'Wais', "Qais"  ]
 
-  const leftSectionPlayers = players.filter((player, i)=> i <8 ? player : null)
+  const leftSectionPlayers = players.filter((player, i)=> i <10 ? player : null)
 
-  const rightSectionPlayers = players.filter((player, i)=> i >=8 ? player : null)
+  const rightSectionPlayers = players.filter((player, i)=> i >=10 ? player : null)
 
 
   const seeMoreBtnHandler = () =>{
@@ -71,22 +76,41 @@ export default function Enroll({currentuser}) {
 
 
   async function editEvent(eventId){
-    const playersArr = ['walid', 'shahin']
-    const updatedEvent = {players : playersArr};
+      const name = userNow.FullName
 
-    try {
-      const collectionRef = collection(db, 'events');
-      const eventRef = doc(collectionRef, eventId);
-      updateDoc(eventRef, updatedEvent);
-    } catch(error) {
-      console.error(error)
+    const targetedEvent = events.filter(event => event.id === eventId);
+    if(targetedEvent) {
+      const playersArr = targetedEvent[0].players
+      
+      if(playersArr.includes(name)) {alert('Je staat er al op')}
+      else{
+        playersArr.push(name)
+        const updatedEvent = {players : playersArr};
+  
+        try {
+          const collectionRef = collection(db, 'events');
+          const eventRef = doc(collectionRef, eventId);
+          updateDoc(eventRef, updatedEvent);
+        } catch(error) {
+          console.error(error)
+        }
+
+      }
+
     }
   }
 
   editEvent()
   function joinBtnHandler(eventId){
     editEvent(eventId)
+    setFresh(true)
   }
+
+const arrLeftSidePlayer = [1,2,3,4,5,6,7,8,9,10]
+const arrRightSidePlayer = [11,12,13,14,15]
+const arrRightSideReservePlayers = [1,2,3,4,5]
+
+
 
   return (
     <div className="app-container">
@@ -101,59 +125,89 @@ export default function Enroll({currentuser}) {
             events ?
               events.map(eventItem =>{
                 return (
-                  <div className="event-card-container">
-                  <div className="event-card">
-                    <div className="card-title">{eventItem.name}</div>
-                    <div className="details-container">
-                      <div className="details-row">
-                        <div className="details-data">SPELERS</div>
-                        <div className="details-info">{eventItem.players.length}</div>
-                      </div>
-                      <div className="details-row">
-                        <div className="details-data">DATUM</div>
-                        <div className="details-info">{eventItem.startTime}</div>
-                      </div>
-                      <div className="details-row">
-                      <div className="details-data">LOCATIE</div>
-                        <div className="details-info">{eventItem.location}</div>
+                  <>
+                     <div className="event-card-container">
+                      <div className="event-card">
+                        <div className="card-title">{eventItem.name}</div>
+                        <div className="details-container">
+                          <div className="details-row">
+                            <div className="details-data">SPELERS</div>
+                            <div className="details-info">{eventItem.players.length}</div>
+                          </div>
+                          <div className="details-row">
+                            <div className="details-data">TIJD</div>
+                            <div className="details-info">{eventItem.startTime}</div>
+                          </div>
+                          <div className="details-row">
+                          <div className="details-data">LOCATIE</div>
+                            <div className="details-info">{eventItem.location}</div>
+                          </div>
+                        </div>
+                        <button className="join-button" onClick={()=>joinBtnHandler(eventItem.id)}>DEELNEMEN</button>
+                        <button className="see-more-btn" onClick={seeMoreBtnHandler}>ZIE MEER</button>
                       </div>
                     </div>
-                    <button className="join-button" onClick={()=>joinBtnHandler(eventItem.id)}>DEELNEMEN</button>
-                    <button className="see-more-btn" onClick={seeMoreBtnHandler}>ZIE MEER</button>
+                    <div className="modal-event" style={{display: seeMoreModal}}>
+                      <button className="back-btn" onClick={()=> setSeeMoreModal('none')}>
+                        <ArrowBackIcon />
+                      </button>
+                      
+                      <div className="players-title">SPELERS</div>
+                      <div className="players-container"> 
+                        <div className="players-section">
+                        {
+                            arrLeftSidePlayer.map((n,i) =>
+                              <div className="players-card">
+                                <div className="players-number">{n}</div>
+                                <div className="players-name"> {eventItem.players[n-1]? eventItem.players[n-1] : null}</div>
+                            </div>
+                            )
+                            
+                        }
+                        </div>
+                        <div className="players-section">
+                        {
+                            arrRightSidePlayer.map((n, i) =>
+                              <div className="players-card">
+                                <div className="players-number">{n}</div>
+                                <div className="players-name"> {eventItem.players[n-1]? eventItem.players[n-1] : null}</div>
+                            </div>
+                            )
+                        }
+                        {
+                            arrRightSideReservePlayers.map((n) =>
+                              <div className="players-card">
+                                <div className="players-number-reserves">{n}</div>
+                                <div className="players-name"> {eventItem.players[n+14]? eventItem.players[n+14] : null}</div>
+                            </div>
+                            )
+                        }
+                        </div>
+
+                    </div>
+                    <div className="players-title">Details</div>
+                    <div className="details-info2">
+                      <CalendarMonthIcon style={{marginRight:'10px'}}/>
+                      <div>{eventItem.name}</div>
+                    </div>
+                    <div className="details-info2">
+                      <AccessTimeIcon style={{marginRight:'10px'}}/>
+                      <div>{eventItem.startTime}</div>
+                    </div>
+                    <div className="details-info2"><PlaceIcon style={{marginRight:'10px'}}/>{eventItem.location}</div>
+
+
                   </div>
-                </div>
+                
+            </>
+                    
                 )
               })
               : null
 
           }
 
-        <div className="modal-event" style={{display: seeMoreModal}}>
-          <div className="players-title">SPELERS</div>
-          <div className="players-container"> 
-            <div className="players-section">
-            {
-              leftSectionPlayers.map((player, i)=>
-              <div className="players-card">
-                <div className="players-number">{i+1}</div>
-                <div className="players-name">{player}</div>
-              </div>
-              )
-            }
-            </div>
-            <div className="players-section">
-            {
-              rightSectionPlayers.map((player, i)=>
-              <div className="players-card">
-                <div className="players-number">{i+9}</div>
-                <div className="players-name">{player}</div>
-              </div>
-              )
-            }
-            </div>
-          </div>
-        </div>
-      
+
       </div>
     </div>
 
