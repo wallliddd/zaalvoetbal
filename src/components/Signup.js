@@ -64,6 +64,7 @@ const Signup = ({switchComponent}) => {
                     confirmPassword: ""
                 })
             }
+            switchComponent()
         }
     }
 

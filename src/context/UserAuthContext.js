@@ -3,6 +3,7 @@ import { useContext, createContext, useEffect, useState } from "react"
 import { AuthErrorCodes, createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth'
 import { auth, db } from "../firebase.config";
 import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 
 const userContext = createContext();
@@ -13,6 +14,8 @@ export const ewa = (paramA) => { return paramA }
 const UserAuthContext = ({ children }) => {
   const [error, setError] = useState("")
   const [currentuser, setuser] = useState()
+  const navigate = useNavigate();
+
   useEffect(
     () => {
       onAuthStateChanged(auth, user => {
@@ -41,7 +44,8 @@ const UserAuthContext = ({ children }) => {
           // });
           const ref = doc(db, "userinfo", result.user.uid)
           const docRef = await setDoc(ref, { FullName })
-          alert("Wellcome new User create successfully")
+          alert("Welkom, je account is aangemaakt en je kan nu inloggen")
+          navigate('/')
           console.log("Document written with ID: ", docRef.id);
         } catch (e) {
           console.error("Error adding document: ", e);
@@ -53,7 +57,7 @@ const UserAuthContext = ({ children }) => {
         setInterval(() => {
           setError("")
         }, 5000)
-        setError("email already in use try another email")
+        setError("Email already in use try another email")
       }
       else if (err.code === AuthErrorCodes.WEAK_PASSWORD) {
 
