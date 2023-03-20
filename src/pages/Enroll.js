@@ -137,7 +137,8 @@ export default function Enroll({currentuser}) {
   function unJoinBtnHandler(eventId){
     deletePlayerToEvent(eventId)
     setFresh(true)
-    window.location.reload(false)
+    setTimeout(window.location.reload(false), 3000)
+    
 
   }
 
