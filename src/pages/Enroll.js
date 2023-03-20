@@ -69,13 +69,14 @@ export default function Enroll({currentuser}) {
   const seeMoreBtnHandler = () =>{
     seeMoreModal === 'none' ? setSeeMoreModal('flex') : setSeeMoreModal('none')
   }
+  
 
 
   // R50Ro95SDwdsPVHjyUkPL5Bv3vN2
 
 
 
-  async function editEvent(eventId){
+  async function addPlayerToEvent(eventId){
       const name = userNow.FullName
 
     const targetedEvent = events.filter(event => event.id === eventId);
@@ -100,10 +101,44 @@ export default function Enroll({currentuser}) {
     }
   }
 
-  editEvent()
+  async function deletePlayerToEvent(eventId){
+    const name = userNow.FullName
+
+  const targetedEvent = events.filter(event => event.id === eventId);
+  if(targetedEvent) {
+    const playersArr = targetedEvent[0].players
+    
+    if(playersArr.includes(name)) {
+      const deletedPlayerArr = playersArr.filter((player)=> player !== name)
+      console.log('deletedPlayerArr', deletedPlayerArr)
+      const updatedEvent = {players : deletedPlayerArr};
+
+      try {
+        const collectionRef = collection(db, 'events');
+        const eventRef = doc(collectionRef, eventId);
+        updateDoc(eventRef, updatedEvent);
+      } catch(error) {
+        console.error(error)
+      }
+
+    }
+
+  }
+}
+
+
+
+
   function joinBtnHandler(eventId){
-    editEvent(eventId)
+    addPlayerToEvent(eventId)
     setFresh(true)
+  }
+
+  function unJoinBtnHandler(eventId){
+    deletePlayerToEvent(eventId)
+    setFresh(true)
+    window.location.reload(false)
+
   }
 
 const arrLeftSidePlayer = [1,2,3,4,5,6,7,8,9,10]
@@ -144,6 +179,13 @@ const arrRightSideReservePlayers = [1,2,3,4,5]
                           </div>
                         </div>
                         <button className="join-button" onClick={()=>joinBtnHandler(eventItem.id)}>DEELNEMEN</button>
+                        {
+                          
+                          eventItem.players.includes(userNow.FullName)? 
+                          <button className="join-button" style={{background:'red'}} onClick={()=>unJoinBtnHandler(eventItem.id)}>Afmelden</button>
+                          :null
+                          // als user fullname incuse list 
+                        }
                         <button className="see-more-btn" onClick={seeMoreBtnHandler}>ZIE MEER</button>
                       </div>
                     </div>
