@@ -233,36 +233,7 @@ export default function Enroll({ currentuser }) {
 
       {
         // setShowMenuModal === "flex" ?
-        <div className="menu-modal" style={{ display: ShowMenuModal }}>
-          <div className="menu-item-container">
-            <div className="menu-item">
-              <EventAvailableOutlinedIcon style={{ marginRight: "20px" }} />
-              Evenementen
-            </div>
-            <div className="menu-item">
-              <GavelOutlinedIcon style={{ marginRight: "20px" }} />
-              Regels
-            </div>
-            <div className="menu-item">
-              <AccountCircleOutlinedIcon style={{ marginRight: "20px" }} />
-              Profiel
-            </div>
-            <div className="menu-item">
-              <CampaignOutlinedIcon style={{ marginRight: "20px" }} />{" "}
-              Aankondigingen
-            </div>
-            <div className="menu-item">
-              <LogoutOutlinedIcon style={{ marginRight: "20px" }} />
-              Uitloggen
-            </div>
-          </div>
-          <button
-            className="modal-close-btn"
-            onClick={() => setShowMenuModal("none")}
-          >
-            X
-          </button>
-        </div>
+
         // :null
       }
 
