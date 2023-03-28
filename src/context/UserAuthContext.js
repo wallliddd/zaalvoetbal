@@ -9,22 +9,19 @@ import { useNavigate } from "react-router-dom";
 const userContext = createContext();
 export const useAuth = () => { return useContext(userContext) }
 
-export const ewa = (paramA) => { return paramA }
 
 const UserAuthContext = ({ children }) => {
   const [error, setError] = useState("")
   const [currentuser, setuser] = useState()
   const navigate = useNavigate();
 
+  
   useEffect(
     () => {
       onAuthStateChanged(auth, user => {
-        console.log(user)
         if (user) {
           setuser(user)
-          console.log("u are logging")
-          ewa('WALID')
-
+          console.log("u are logging", user)
         }
         else {
           // alert("u are logout")
@@ -72,11 +69,12 @@ const UserAuthContext = ({ children }) => {
       }
     })
   }
-  const value = {
+  const  value = {
     SignUp,
     error,
     currentuser
   }
+
   return (
     <userContext.Provider value={value}>{children}</userContext.Provider>
   )

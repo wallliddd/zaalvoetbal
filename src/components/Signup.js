@@ -11,6 +11,10 @@ const Signup = ({switchComponent}) => {
         password: "",
         confirmPassword: ""
     })
+
+
+    console.log("i am in currentuer", currentuser)
+
     useEffect(() => {
         console.log("i am in")
         if (error) {
