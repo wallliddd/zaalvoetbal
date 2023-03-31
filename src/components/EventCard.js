@@ -25,6 +25,7 @@ function EventCard({
   const arrLeftSidePlayer = [1, 2, 3, 4, 5];
   const [paid, setPaid] = useState(false);
   const [showPlayers, setShowplayers] = useState("none");
+  const [guest, setGuest] = useState("");
   const navigate = useNavigate();
 
 
@@ -35,7 +36,7 @@ function EventCard({
   }, []);
 
   function hanleEnrollment(eventId) {
-    handleAddPlayer(eventId);
+    handleAddPlayer(eventId, guest);
     setShowplayers("flex");
   }
 
@@ -48,7 +49,6 @@ function EventCard({
     handlePay(eventItem.id, paid);
   };
 
-  console.log(eventItem)
   function tikkieHandler(){
     if(eventItem.tikkie==="") alert('Tikke is nog niet online gezet door Shahin. Wacht aub tot die aap dat gedaan heeft')
     else window.open(eventItem.tikkie, '_blank');
@@ -139,12 +139,18 @@ function EventCard({
               </button>
             )}
           </div>
+          
         </div>
+
 
         {showPlayers === "flex" ? (
           <>
+                  <div className="guest-container">
+              <input className="add-guest-input" onChange={(e)=> setGuest(e.target.value)} type={'text'} placeholder={'NAAM GAST'}></input>
+              <button className="add-guest-btn" onClick={()=>hanleEnrollment(eventItem.id)}>TOEVOEGEN</button>
+            </div>
             <div
-              style={{ display: "flex", marginTop: "45px" }}
+              style={{ display: "flex", marginTop: "15px" }}
               className="card-show-players"
             >
               <div className="area">
@@ -202,6 +208,7 @@ function EventCard({
                 </div>
               </div>
             </div>
+
 
             <div
               style={{
@@ -261,6 +268,7 @@ function EventCard({
                 </button>
               </div>
             </div>
+
             <div className="switch-area">
               <div>Heb je betaald?</div>
 

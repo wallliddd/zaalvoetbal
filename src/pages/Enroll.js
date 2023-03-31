@@ -203,10 +203,13 @@ function Enroll() {
     setLocation("");
   }
 
-  function handleAddPlayer(eventId) {
+  function handleAddPlayer(eventId, playerName) {
+    const user = playerName ? playerName : userNow.FullName
+
+    console.log('iser', user)
     dispatch({
       type: ACTIONS.ADD_PLAYER,
-      payload: { eventId: eventId, userName: userNow.FullName },
+      payload: { eventId: eventId, userName: user },
     });
   }
 
