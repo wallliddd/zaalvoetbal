@@ -1,16 +1,17 @@
 {
   "files": {
-    "main.css": "/zaalvoetbal/static/css/main.aaedc6dc.css",
-    "main.js": "/zaalvoetbal/static/js/main.66408cfd.js",
+    "main.css": "/zaalvoetbal/static/css/main.c47e68d3.css",
+    "main.js": "/zaalvoetbal/static/js/main.f703acc6.js",
     "static/js/787.d6d84f6d.chunk.js": "/zaalvoetbal/static/js/787.d6d84f6d.chunk.js",
     "static/media/football.png": "/zaalvoetbal/static/media/football.9110cf1cf29ae96695e3.png",
+    "static/media/tikkie.svg": "/zaalvoetbal/static/media/tikkie.099dd2d8cdd690124437a301f0310e00.svg",
     "index.html": "/zaalvoetbal/index.html",
-    "main.aaedc6dc.css.map": "/zaalvoetbal/static/css/main.aaedc6dc.css.map",
-    "main.66408cfd.js.map": "/zaalvoetbal/static/js/main.66408cfd.js.map",
+    "main.c47e68d3.css.map": "/zaalvoetbal/static/css/main.c47e68d3.css.map",
+    "main.f703acc6.js.map": "/zaalvoetbal/static/js/main.f703acc6.js.map",
     "787.d6d84f6d.chunk.js.map": "/zaalvoetbal/static/js/787.d6d84f6d.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.aaedc6dc.css",
-    "static/js/main.66408cfd.js"
+    "static/css/main.c47e68d3.css",
+    "static/js/main.f703acc6.js"
   ]
 }
