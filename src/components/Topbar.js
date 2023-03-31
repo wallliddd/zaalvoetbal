@@ -10,7 +10,7 @@ function Topbar({seeMoreModal, closeModalHandler}) {
       {
         seeMoreModal === 'none'? <MenuIcon className="menu-icon" /> :
 
-        <div className="back-icon-area" onClick={ closeModalHandler}>
+        <div className="back-icon-area" >
             <ArrowBackIcon  />
         </div>
         

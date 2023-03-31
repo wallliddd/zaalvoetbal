@@ -14,6 +14,7 @@ import { red, green } from "@mui/material/colors";
 import EventCard from "../components/EventCard";
 import Topbar from "../components/Topbar";
 import { useAuth } from "../context/UserAuthContext";
+import { useNavigate } from "react-router-dom";
 import {
   doc,
   onSnapshot,
@@ -44,15 +45,7 @@ function reducer(events, action) {
     case ACTIONS.ADD_EVENT:
       return [
         ...events,
-        newEvent(
-          action.payload.name,
-          action.payload.location,
-          action.payload.time,
-          action.payload.players,
-          action.payload.paid,
-          action.payload.tikkie,
-          action.payload.id
-        ),
+          action.payload
       ];
     case ACTIONS.ADD_PLAYER:
       return addPlayer(events, action.payload.userName, action.payload.eventId);
@@ -71,18 +64,7 @@ function reducer(events, action) {
   }
 }
 
-function newEvent(name, location, time, players, paid, tikkie, id) {
-  return {
-    name,
-    name,
-    id: id,
-    location: location,
-    time: time,
-    players: players,
-    paid: paid,
-    tikkie: tikkie,
-  };
-}
+
 
 
 function pay(events, userName, eventId) {
@@ -155,7 +137,7 @@ function deletePlayer(events, userName, eventId) {
   return result;
 }
 
-function Test() {
+function Enroll() {
   const [events, dispatch] = useReducer(reducer, []);
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
@@ -165,11 +147,19 @@ function Test() {
   const [ShowMenuModal, setShowMenuModal] = useState("none");
   const [userNow, setUserNow] = useState("Waldo");
   const userObj = JSON.parse(localStorage.getItem("loginZaalvoetbal"));
+  
+  const navigate = useNavigate();
   const arrLeftSidePlayer = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   const currentUser = useAuth();
 
+ 
+
+
+
   useEffect(() => {
+    if(!userObj) navigate('auth');
+
     (async () => {
       const collectionRef = collection(db, "userinfo");
       const snapshots = await getDocs(collectionRef);
@@ -234,18 +224,20 @@ function Test() {
     setSeeMoreModal("flex");
   }
 
-  function payHandler(eventId) {
-    dispatch({
-      type: ACTIONS.PAY,
-      payload: { eventId: eventId, userName: userNow.FullName },
-    });
-  }
 
-  function unpayHandler(eventId) {
-    dispatch({
-      type: ACTIONS.UNPAY,
-      payload: { eventId: eventId, userName: userNow.FullName },
-    });
+  function handlePay(eventId, paidStatus){
+    if(paidStatus){
+      dispatch({
+        type: ACTIONS.UNPAY,
+        payload: { eventId: eventId, userName: userNow.FullName },
+      });
+    } else{
+      dispatch({
+        type: ACTIONS.PAY,
+        payload: { eventId: eventId, userName: userNow.FullName },
+      });
+    }
+
   }
 
   return (
@@ -259,33 +251,27 @@ function Test() {
         style={{ height: "100%", background: "#274D76", overflow: "hidden" }}
       >
         <div className="events-page-container">
-          <div className="title">EVENEMENTEN</div>
+
+          <div className="title">EVENEMENTEN
+          </div>
 
           {events
-            ? events.map((eventItem) => {
-                return (
-                  <>
-                    <EventCard
-                      key={eventItem.id}
-                      handleAddPlayer={handleAddPlayer}
-                      eventItem={eventItem}
-                      userNow={userNow}
-                      handleDeletePlayer={handleDeletePlayer}
-                      seeMoreModal={seeMoreModal}
-                      openModalHandler={openModalHandler}
-                    />
-                    {seeMoreModal === "flex" ? (
-                      <EventModal
-                        unpayHandler={unpayHandler}
-                        payHandler={payHandler}
-                        seeMoreModal={seeMoreModal}
-                        eventItem={eventItem}
-                        userNow={userNow}
-                      />
-                    ) : null}
-                  </>
-                );
-              })
+            ? events.sort((a, b) => a.date - b.date).map((eventItem) => {
+              return (
+                <>
+                  <EventCard
+                    key={eventItem.id}
+                    handleAddPlayer={handleAddPlayer}
+                    eventItem={eventItem}
+                    userNow={userNow}
+                    handleDeletePlayer={handleDeletePlayer}
+                    seeMoreModal={seeMoreModal}
+                    openModalHandler={openModalHandler}
+                    handlePay={handlePay}
+                  />
+                </>
+              );
+            })
             : null}
         </div>
       </div>
@@ -293,4 +279,4 @@ function Test() {
   );
 }
 
-export default Test;
+export default Enroll;

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import PlaceIcon from "@mui/icons-material/Place";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
 import { red, green } from "@mui/material/colors";
 
@@ -12,6 +11,8 @@ function EventModal({ seeMoreModal, eventItem, userNow , payHandler, unpayHandle
   const arrRightSideReservePlayers = [1, 2, 3, 4, 5];
   const [paid, setPaid] = useState(false);
 
+
+  console.log(eventItem.id + ' ' + paid)
   useEffect(() => {
     if(eventItem.paid.includes(userNow.FullName)) setPaid(true)
     else setPaid(false)
@@ -26,6 +27,7 @@ function EventModal({ seeMoreModal, eventItem, userNow , payHandler, unpayHandle
   }
 
   const payBtnHandler = (eventId) => {
+
     if(!paid){
         setPaid(true)
         payHandler(eventId)
@@ -38,7 +40,7 @@ function EventModal({ seeMoreModal, eventItem, userNow , payHandler, unpayHandle
 
 
 
-
+alert('event: ' +  eventItem.id)
 
   return (
     <div className="modal-event" style={{ display: seeMoreModal }}>
